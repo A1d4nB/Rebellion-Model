@@ -4,11 +4,9 @@ Created on May 14 2025:
 
 This will be the main file to run the simulation. This should include the setup and the go functionality.
 """
-import pylab as p
 from numpy.f2py.auxfuncs import throw_error
 
 from turtle import Turtle
-from Model import Model
 from Agent import Agent
 from Cop import Cop
 from Patch import Patch
@@ -29,9 +27,9 @@ def main():
     coords = [[i,j] for i in range(grid_size) for j in range(grid_size)]
 
 
-
-    setup_neighborhood()
-
+    for row in grid:
+        for patch in row:
+            patch.neighborhood = get_neighborhood(grid, patch)
 
 
 
@@ -49,18 +47,12 @@ def main():
 
 if __name__ == "__main__":
     main()
-    #while loop
-    #step
 
-def setup_neighborhood(self):
-    for row in self.grid:
-        for patch in row:
-            patch.neighborhood = self.get_neighborhood(patch, vision)
 
-def get_neighbours(self, patch, vision):
+def get_neighborhood(grid, patch):
     neighbors = []
-    for row in self.grid:
-        for patch in row:
+    for row in grid:
+        for p in row:
             if (abs(p.x - patch.x) <= vision) and (abs(p.y - patch.y) <= vision and p != patch):
                 neighbors.append(patch)
     return neighbors
