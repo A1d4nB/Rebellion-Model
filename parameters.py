@@ -1,4 +1,5 @@
 
+steps = 1500
 grid_size = 40
 k = 2.3
 threshold = 0.1

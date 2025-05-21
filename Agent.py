@@ -6,6 +6,7 @@ Agent module contains the attributes and functionality of an Agent from Rebellio
 """
 import math
 import random
+from parameters import *
 
 class Agent:
     def __init__(self, patch):
@@ -16,15 +17,15 @@ class Agent:
         self.hardship = random.uniform(0.0, 1.0)
 
 # follow the netlogo code
-    def determine_behaviour(self, k, threshold, government_legitimacy):
-        grievance = self.calculate_grievance(government_legitimacy)
+    def determine_behaviour(self):
+        grievance = self.calculate_grievance()
         p = self.arrest_probability(self.patch.neighborhood, k)
         self.is_active = (grievance - self.risk_aversion * p) > threshold
 
-    def calculate_grievance(self, government_legitimacy):
+    def calculate_grievance(self):
         return self.hardship * (1 - government_legitimacy)
 
-    def arrest_probability(self, neighborhood, k):
+    def arrest_probability(self, neighborhood):
         c = sum(1 for patch in neighborhood if patch)
         a = 1 + sum(1 for patch in neighborhood for agent in patch.agents if agent.active)
         return 1 - math.exp(-k * math.floor(c / a))
@@ -46,5 +47,12 @@ def move(self):
 #Not sure if we should have an external Turtle class of just have move logic within
 #each agent class, then have a "simulation" class which might just be in main.
 
+def step(self):
+    if self.jail_term == 0:
+        self.move()
+        self.determine_behaviour(k, threshold, government_legitimacy)
+
+    else:
+        self.jail_term -= 1
 
 

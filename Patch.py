@@ -22,14 +22,14 @@ class Patch:
             for neighbor_patch in row:
                 distance = self.patch_distance(neighbor_patch)
 
-                if (distance <= vision):
+                if distance <= vision:
                     self.neighborhood.add(neighbor_patch)
 
     def populate_neighbours_v2(self, grid):
         x,y = self.coords
         for i in range(-vision, vision + 1):
             for j in range(-vision, vision + 1):
-                if (i == 0 and j == 0):
+                if i == 0 and j == 0:
                     continue
                 grid_x = (x + i) % grid_size
                 grid_y = (y + j) % grid_size

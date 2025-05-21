@@ -5,19 +5,19 @@ Created on May 14 2025:
 Cops module contains the attributes and functionality of a Cop from Rebellion.
 """
 import random
-
+from parameters import *
 
 class Cop:
     def __init__(self, patch):
         self.patch = patch
         self.location = 0
 
-    def enforce(self, k, max_jail_term):
-        suspects = [agent for patch in self.patch.neighborhood for agent in patch.agents if agent.active]
+    def enforce(self):
+        suspects = [patch for patch in self.patch.neighborhood if patch.agent]
         if suspects:
             suspect = random.choice(suspects)
             suspect.active = False
-            suspect.jail_term = random.randint(k, max_jail_term)
+            suspect.jail_term = random.randint(1, max_jail_term)
             self.patch = suspect.patch
 
 
@@ -28,3 +28,7 @@ class Cop:
         self.patch.cop = False
         self.patch = new_patch
         new_patch.cop = True
+
+    def step(self):
+        # agent.run
+        self.enforce()

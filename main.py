@@ -64,6 +64,12 @@ def main():
 
 
     #Run Simulation
+    
+        for agent in agent_list:
+            agent.step()
+        for cop in cop_list:
+            cop.enforce()
+
 
 
 

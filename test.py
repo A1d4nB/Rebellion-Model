@@ -4,7 +4,6 @@ import random
 import math
 from Cop import Cop
 
-
 grid_size = 6
 initial_agent_density = 0.25
 cop_density = 0.5
@@ -15,11 +14,7 @@ vision = 2
 grid = [[Patch(i, j) for j in range(grid_size)] for i in range(grid_size)]
 coords = [[i,j] for i in range(grid_size) for j in range(grid_size)]
 
-
 fill_coords = random.sample(coords, math.ceil(initial_agent_density * len(coords)))
-
-
-
 
 for i,j in fill_coords:
     agent = Agent(grid[i][j])
@@ -34,15 +29,9 @@ cop_list = []
 for i, j in cop_coords:
     cop_list.append(Cop(grid[i][j]))
     grid[i][j].cop = True
-
-
 #print(grid)
 
 # Testing for Neighbours
-
-
-
-
 
 sample = grid[0][0]
 x,y = sample.coords
