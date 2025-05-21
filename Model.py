@@ -5,7 +5,7 @@ Created on May 14 2025:
 Patch module contains the attributes and functionality of  Rebellion the rebellion model.
 """
 
-class Patch:
+"""class Patch:
     def __init__(self, params):
         self.citizens = params.citizens
         self.cops = params.cops
@@ -15,6 +15,7 @@ class Patch:
         self.rebellion_threshold = params.rebellion_threshold
         self.running = True
     
+    
     def setup(self):
         # some setup code
         self.setup="run"
@@ -22,3 +23,4 @@ class Patch:
     def iterate(self):
         #iteration code
         self.counter+=1
+"""

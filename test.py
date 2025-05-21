@@ -4,11 +4,13 @@ import random
 import math
 
 
-grid_size = 2
+grid_size = 5
 initial_agent_density = 0.2
 
-grid = [[0 for _ in range(grid_size)] for _ in range(grid_size)]
-print(grid)
+#grid = [[0 for _ in range(grid_size)] for _ in range(grid_size)]
+grid = [[Patch(i, j) for j in range(grid_size)] for i in range(grid_size)]
+
+#print(grid)
 for i in range(grid_size):
     for j in range(grid_size):
         grid[i][j] = Patch(i,j)
@@ -27,6 +29,9 @@ for agent_x_coord, agent_y_coord in fill_coords:
 
     #grid[fill_coords[0]][fill_coords[1]].occupied_by(agent)
 
+    for row in grid:
+        for patch in row:
+            patch.patch_distance(patch, grid)
 
 
 print(grid)

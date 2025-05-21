@@ -5,7 +5,6 @@ Created on May 14 2025:
 This will be the main file to run the simulation. This should include the setup and the go functionality.
 """
 from numpy.f2py.auxfuncs import throw_error
-
 from turtle import Turtle
 from Agent import Agent
 from Cop import Cop
@@ -25,13 +24,17 @@ def main():
         raise ValueError("The sum of INITIAL-COP-DENSITY and INITIAL-AGENT-DENSITY should not be greater than 100")
 
     # Setup the grid with Patches
-    grid = [[Patch(x,y) for y in range(grid_size) for x in range(grid_size)]]
+    #Change this grid to grid in testing and should still work
+    grid = [[0 for _ in range(grid_size)] for _ in range(grid_size)]
+    print(grid)
+    for i in range(grid_size):
+        for j in range(grid_size):
+            grid[i][j] = Patch(i, j)
     coords = [[i,j] for i in range(grid_size) for j in range(grid_size)]
-
 
     for row in grid:
         for patch in row:
-            patch.neighborhood = get_neighborhood(grid, patch)
+            patch.patch_distance(grid)
 
 
 
@@ -53,11 +56,14 @@ def main():
 if __name__ == "__main__":
     main()
 
-
-def get_neighborhood(grid, patch):
+#This is moved into patch, can probably get rid of this
+def get_neighborhood(grid, original_patch):
     neighbors = []
     for row in grid:
-        for p in row:
-            if (abs(p.x - patch.x) <= vision) and (abs(p.y - patch.y) <= vision and p != patch):
-                neighbors.append(patch)
+        for neighbor_patch in row:
+            dr = min(abs(original_patch.coords[0] - neighbor_patch.coords[0]), grid_size - abs(original_patch.coords[0] - neighbor_patch.coords[0]))
+            dc = min(abs(original_patch.coords[1] - neighbor_patch.coords[1]), grid_size - abs(original_patch.coords[1] - neighbor_patch.coords[1]))
+            if(math.sqrt((dr ** 2 + dc ** 2))) >= vision:
+                neighbors.append(neighbor_patch)
     return neighbors
+
