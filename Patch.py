@@ -11,6 +11,6 @@ class Patch:
         self.x = x
         self.y = y
         self.jailed = []
-        self.cops = False
-        self.agents = False
+        self.cop = False
+        self.agent = False
         self.neighborhood = []
