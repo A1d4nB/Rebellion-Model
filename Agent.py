@@ -24,7 +24,7 @@ class Agent:
         return self.hardship * (1 - government_legitimacy)
 
     def arrest_probability(self, neighborhood, k):
-        c = sum(1 for patch in neighborhood for cop in patch.cops)
+        c = sum(1 for patch in neighborhood if patch)
         a = 1 + sum(1 for patch in neighborhood for agent in patch.agents if agent.active)
         return 1 - math.exp(-k * math.floor(c / a))
 
