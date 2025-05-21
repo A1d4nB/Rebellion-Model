@@ -20,34 +20,48 @@ def main():
     # All variables in parameters file
 
     # Checking if the values match
-    if (cop_density + initial_agent_density) < 1:
+    if (cop_density + initial_agent_density) > 1:
         raise ValueError("The sum of INITIAL-COP-DENSITY and INITIAL-AGENT-DENSITY should not be greater than 100")
 
     # Setup the grid with Patches
     #Change this grid to grid in testing and should still work
-    grid = [[0 for _ in range(grid_size)] for _ in range(grid_size)]
-    print(grid)
-    for i in range(grid_size):
-        for j in range(grid_size):
-            grid[i][j] = Patch(i, j)
+    grid = [[Patch(i, j) for j in range(grid_size)] for i in range(grid_size)]
     coords = [[i,j] for i in range(grid_size) for j in range(grid_size)]
+
+    # For every patch, we have to find neighbour
 
     for row in grid:
         for patch in row:
-            patch.patch_distance(grid)
+            #patch.populate_neighbours(grid)
+            patch.populate_neighbours_v2(grid)
+
 
 
 
     # Spawn Agents
     agent_coords = random.sample(coords, math.ceil(initial_agent_density * len(coords)))
+    # Array of All Agents
+    agent_list = []
 
-    #for i, j in agent_coords:
-    # Find Random Subset of cords
-
+    for i, j in agent_coords:
+        agent_list.append(Agent(grid[i][j]))
+        grid[i][j].agent = True
 
     # Spawn Cops
-    # Find Unoccupied Coords
-    # Then DO GPT code
+    un_occupied_coords = [[i, j] for i in range(grid_size) for j in range(grid_size)
+                          if (grid[i][j].agent == False and grid[i][j].cop == False)]
+
+    cop_coords = random.sample(un_occupied_coords, math.ceil(cop_density * len(un_occupied_coords)))
+    cop_list = []
+    for i, j in cop_coords:
+        cop_list.append(Cop(grid[i][j]))
+        grid[i][j].cop = True
+
+    print("Agent - " + str(len(agent_list)))
+    print("Cop - " +str(len(cop_list)))
+
+    #print(len(grid[0][0].neighborhood))
+
 
     #Run Simulation
 
@@ -55,15 +69,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-#This is moved into patch, can probably get rid of this
-def get_neighborhood(grid, original_patch):
-    neighbors = []
-    for row in grid:
-        for neighbor_patch in row:
-            dr = min(abs(original_patch.coords[0] - neighbor_patch.coords[0]), grid_size - abs(original_patch.coords[0] - neighbor_patch.coords[0]))
-            dc = min(abs(original_patch.coords[1] - neighbor_patch.coords[1]), grid_size - abs(original_patch.coords[1] - neighbor_patch.coords[1]))
-            if(math.sqrt((dr ** 2 + dc ** 2))) >= vision:
-                neighbors.append(neighbor_patch)
-    return neighbors
 
