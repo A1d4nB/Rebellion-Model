@@ -11,6 +11,8 @@ from Agent import Agent
 from Cop import Cop
 from Patch import Patch
 from parameters import *
+import random
+import math
 
 # Setup
 def main():
@@ -34,6 +36,9 @@ def main():
 
 
     # Spawn Agents
+    agent_coords = random.sample(coords, math.ceil(initial_agent_density * len(coords)))
+
+    #for i, j in agent_coords:
     # Find Random Subset of cords
 
 

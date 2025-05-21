@@ -14,3 +14,5 @@ class Patch:
         self.cop = False
         self.agent = False
         self.neighborhood = []
+    def __repr__(self):
+        return f"Patch({self.x}, {self.y}, {self.occupied_by})"
