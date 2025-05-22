@@ -14,6 +14,7 @@ class Patch:
         self.jailed = []
         self.cop = False
         self.agent = False
+        self.occupant = None
         # VARIABLE defintion if the Patch will be occupied next turn.
         self.neighborhood = set()
 
