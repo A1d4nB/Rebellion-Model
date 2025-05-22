@@ -16,8 +16,6 @@ class Agent:
         self.hardship = random.uniform(0.0, 1.0)
         
         self.patch = patch
-        self.patch.agent = True
-        self.patch.occupant = self
 
     def __repr__(self):
         to_string = ""
@@ -42,12 +40,12 @@ class Agent:
 
     def arrest_probability(self, neighborhood):
         c = sum(1 for patch in neighborhood if patch)
-        a = 1 + sum(1 for patch in neighborhood if patch.agent and patch.occupant.is_active)
+        a = 1 + sum(1 for patch in neighborhood if isinstance(patch.occupant, Agent) and patch.occupant.is_active)
         return 1 - math.exp(-k * math.floor(c / a))
 
     def move(self):
-        potential_locations = [patch for patch in self.patch.neighborhood if not patch.agent and not patch.cop]
-        print(len(potential_locations))
+        potential_locations = [patch for patch in self.patch.neighborhood if patch.occupant is None]
+
         if potential_locations:
             new_patch = random.choice(potential_locations)
             self.patch.agent = False

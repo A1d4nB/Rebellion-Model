@@ -9,6 +9,7 @@ from turtle import Turtle
 from Agent import Agent
 from Cop import Cop
 from Patch import Patch
+from stats import Stats
 from parameters import *
 import random
 import math
@@ -16,6 +17,7 @@ import math
 # Setup
 def main():
     # Setup
+
 
     # All variables in parameters file
 
@@ -41,8 +43,10 @@ def main():
     agent_list = []
 
     for i, j in agent_coords:
-        agent_list.append(Agent(grid[i][j]))
-        grid[i][j].agent = True
+        agent = Agent(grid[i][j])
+        agent_list.append(agent)
+        grid[i][j].occupant = agent
+
 
     # Spawn Cops
     un_occupied_coords = [[i, j] for i in range(grid_size) for j in range(grid_size)
@@ -51,16 +55,18 @@ def main():
     cop_coords = random.sample(un_occupied_coords, math.ceil(cop_density * len(coords)))
     cop_list = []
     for i, j in cop_coords:
-        cop_list.append(Cop(grid[i][j]))
-        grid[i][j].cop = True
+        cop = Cop(grid[i][j])
+        cop_list.append(cop)
+        grid[i][j].occupant = cop
+
 
     print("Agent - " + str(len(agent_list)))
     print("Cop - " +str(len(cop_list)))
 
     simulation_track = [i for i in range(0, simulation_time)]
-    quiet_track = []
-    active_track = []
-    jailed_track = []
+
+
+    stats = Stats()
     #Run Simulation
     time_count = simulation_time
 
@@ -73,31 +79,17 @@ def main():
                 cop.enforce()
             time_count -=1
 
-            quiet, active, jailed = reporting(agent_list, cop_list)
-            print(quiet, active, jailed)
-            quiet_track.append(quiet)
-            active_track.append(active)
-            jailed_track.append(jailed)
+            stats.reporting(agent_list)
+
+
         except KeyboardInterrupt:
             print("\nSimulation interrupted by user, exiting....")
             exit(1)
         # Function for reporting
 
+    stats.plotting()
 
-def reporting(agent_list, cop_list):
-    quiet = 0
-    jailed = 0
-    active = 0
-    for agent in agent_list:
-        if agent.jail_term >= 1:
-            jailed += 1
-    for agent in agent_list:
-        if agent.is_active:
-            active += 1
-        else:
-            quiet += 1
 
-    return quiet, active, jailed
 
 
 #free_agents = len(agent_list) -
