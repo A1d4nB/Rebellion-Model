@@ -18,7 +18,7 @@ class Cop:
             suspect = random.choice(suspects)
             suspect.is_active = False
             suspect.jail_term = random.randint(1, max_jail_term)
-            suspect.patch.jailed.append(suspect)
+            #suspect.patch.jailed.append(suspect)
             self.patch.occupant = None
             self.patch = suspect.patch
             self.patch.occupant = self

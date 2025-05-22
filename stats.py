@@ -35,9 +35,9 @@ class Stats:
         self.active_track = np.array(self.active_track)
         self.jailed_track = np.array(self.jailed_track)
 
-        plt.scatter(self.time_track, self.quiet_track, label="Quiet", color="green")
-        plt.scatter(self.time_track, self.active_track, label="Active", color="red")
-        plt.scatter(self.time_track, self.jailed_track, label="Jailed", color="black")
+        plt.plot(self.time_track, self.quiet_track, label="Quiet", color="green")
+        plt.plot(self.time_track, self.active_track, label="Active", color="red")
+        plt.plot(self.time_track, self.jailed_track, label="Jailed", color="black")
 
         plt.xlabel("Time")
         plt.ylabel("Number of Agents")
