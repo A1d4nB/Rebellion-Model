@@ -47,6 +47,7 @@ class Agent:
         self.patch.occupant = None
         self.patch = new_patch
         new_patch.agent = True
+        new_patch.occupant = self
 
 #Not sure if we should have an external Turtle class of just have move logic within
 #each agent class, then have a "simulation" class which might just be in main.
