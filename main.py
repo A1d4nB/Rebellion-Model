@@ -20,7 +20,7 @@ def main():
     # All variables in parameters file
 
     # Checking if the values match
-    if (cop_density + initial_agent_density) > 1:
+    if (cop_density + initial_agent_density) >= 1:
         raise ValueError("The sum of INITIAL-COP-DENSITY and INITIAL-AGENT-DENSITY should not be greater than 100")
 
     # Setup the grid with Patches
@@ -35,9 +35,6 @@ def main():
             #patch.populate_neighbours(grid)
             patch.populate_neighbours_v2(grid)
 
-
-
-
     # Spawn Agents
     agent_coords = random.sample(coords, math.ceil(initial_agent_density * len(coords)))
     # Array of All Agents
@@ -49,9 +46,9 @@ def main():
 
     # Spawn Cops
     un_occupied_coords = [[i, j] for i in range(grid_size) for j in range(grid_size)
-                          if (grid[i][j].agent == False and grid[i][j].cop == False)]
+                          if (grid[i][j].occupant is None)]
 
-    cop_coords = random.sample(un_occupied_coords, math.ceil(cop_density * len(un_occupied_coords)))
+    cop_coords = random.sample(un_occupied_coords, math.ceil(cop_density * len(coords)))
     cop_list = []
     for i, j in cop_coords:
         cop_list.append(Cop(grid[i][j]))
@@ -60,17 +57,50 @@ def main():
     print("Agent - " + str(len(agent_list)))
     print("Cop - " +str(len(cop_list)))
 
-    #print(len(grid[0][0].neighborhood))
-
-
+    simulation_track = [i for i in range(0, simulation_time)]
+    quiet_track = []
+    active_track = []
+    jailed_track = []
     #Run Simulation
+    time_count = simulation_time
+
+    while (time_count > 0):
+        try:
+            for agent in agent_list:
+                agent.step()
+
+            for cop in cop_list:
+                cop.enforce()
+            time_count -=1
+
+            quiet, active, jailed = reporting(agent_list, cop_list)
+            print(quiet, active, jailed)
+            quiet_track.append(quiet)
+            active_track.append(active)
+            jailed_track.append(jailed)
+        except KeyboardInterrupt:
+            print("\nSimulation interrupted by user, exiting....")
+            exit(1)
+        # Function for reporting
+
+
+def reporting(agent_list, cop_list):
+    quiet = 0
+    jailed = 0
+    active = 0
     for agent in agent_list:
-        agent.step()
-    for cop in cop_list:
-        cop.enforce()
+        if agent.jail_term >= 1:
+            jailed += 1
+    for agent in agent_list:
+        if agent.is_active:
+            active += 1
+        else:
+            quiet += 1
+
+    return quiet, active, jailed
 
 
-
+#free_agents = len(agent_list) -
 
 if __name__ == "__main__":
     main()

@@ -19,6 +19,18 @@ class Agent:
         self.patch.agent = True
         self.patch.occupant = self
 
+    def __repr__(self):
+        to_string = ""
+
+        if self.is_active:
+            to_string += "active"
+        elif self.jail_term > 0:
+            to_string += "jail"
+        else:
+            to_string += "quiet"
+
+        return to_string
+
 # follow the netlogo code
     def determine_behaviour(self):
         grievance = self.calculate_grievance()
@@ -33,24 +45,16 @@ class Agent:
         a = 1 + sum(1 for patch in neighborhood if patch.agent and patch.occupant.is_active)
         return 1 - math.exp(-k * math.floor(c / a))
 
-# Function for run/simulation behaviour
-# Should include jail term minus,
-# Should include Active or not
-# then Move
-
-# Function for Move behaviour - Trial
     def move(self):
         potential_locations = [patch for patch in self.patch.neighborhood if not patch.agent and not patch.cop]
-
-        new_patch = random.choice(potential_locations)
-        self.patch.agent = False
-        self.patch.occupant = None
-        self.patch = new_patch
-        new_patch.agent = True
-        new_patch.occupant = self
-
-#Not sure if we should have an external Turtle class of just have move logic within
-#each agent class, then have a "simulation" class which might just be in main.
+        print(len(potential_locations))
+        if potential_locations:
+            new_patch = random.choice(potential_locations)
+            self.patch.agent = False
+            self.patch.occupant = None
+            self.patch = new_patch
+            new_patch.agent = True
+            new_patch.occupant = self
 
     def step(self):
         if self.jail_term == 0:
@@ -58,5 +62,6 @@ class Agent:
             self.determine_behaviour()
         else:
             self.jail_term -= 1
+
 
 

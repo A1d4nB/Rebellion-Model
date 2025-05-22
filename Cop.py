@@ -15,7 +15,7 @@ class Cop:
         self.patch.occupant=self
 
     def enforce(self):
-        suspects = [patch.occupant for patch in self.patch.neighborhood if patch.agent]
+        suspects = [patch.occupant for patch in self.patch.neighborhood if patch.agent and patch.occupant.is_active]
         if suspects:
             suspect = random.choice(suspects)
             suspect.is_active = False
@@ -28,7 +28,7 @@ class Cop:
 
 
     def move(self):
-        potential_locations = [patch for patch in self.patch.neighborhood if not patch.agent and not patch.cop]
+        potential_locations = [patch for patch in self.patch.neighborhood if patch.occupant is None]
 
         new_patch = random.choice(potential_locations)
         self.patch.cop = False
