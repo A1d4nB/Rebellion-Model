@@ -15,7 +15,7 @@ import random
 import math
 
 # Setup
-def main():
+def simulate():
     # Setup
 
 
@@ -95,5 +95,5 @@ def main():
 #free_agents = len(agent_list) -
 
 if __name__ == "__main__":
-    main()
+    simulate()
 
