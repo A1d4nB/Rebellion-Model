@@ -14,7 +14,7 @@ import math
 import csv
 
 # Setup
-def simulate():
+def simulate(params):
     # Setup
 
 
@@ -73,14 +73,11 @@ def simulate():
         try:
             for agent in agent_list:
                 agent.step()
-
             for cop in cop_list:
                 cop.enforce()
             time_count -=1
 
             stats.reporting(agent_list)
-
-
         except KeyboardInterrupt:
             print("\nSimulation interrupted by user, exiting....")
             exit(1)
@@ -94,5 +91,23 @@ def simulate():
 #free_agents = len(agent_list) -
 
 if __name__ == "__main__":
-    simulate()
 
+    with open('Parameters.csv') as csv_file:
+        reader = csv.DictReader(csv_file)
+
+        for row in reader:
+            params = Parameter(row["name"], row['cop_density'], row["initial_agent_density"], row["vision"],
+                               row["government_legitimacy"], row["max_jail_term"])
+            simulate(params)
+
+
+
+
+
+# variable
+# simulation_time = 500
+# cop_density = 0.40
+# initial_agent_density = 0.56
+# vision = 7
+# government_legitimacy = 0.12
+# max_jail_term = 4

@@ -28,9 +28,6 @@ class Stats:
         self.active_track.append(active)
         self.jailed_track.append(jailed)
 
-
-        return None
-
     def plotting(self):
 
         self.quiet_track = np.array(self.quiet_track)

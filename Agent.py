@@ -8,7 +8,7 @@ import math
 import random
 
 class Agent:
-    def __init__(self, patch):
+    def __init__(self, patch, params):
         self.is_active = False
         self.jail_term = 0
 
@@ -33,10 +33,10 @@ class Agent:
     def determine_behaviour(self):
         grievance = self.calculate_grievance()
         p = self.arrest_probability(self.patch.neighborhood)
-        self.is_active = (grievance - self.risk_aversion * p) > threshold
+        self.is_active = (grievance - self.risk_aversion * p) > self.params.threshold
 
     def calculate_grievance(self):
-        return self.hardship * (1 - government_legitimacy)
+        return self.hardship * (1 - self.params.government_legitimacy)
 
     def arrest_probability(self, neighborhood):
         c = sum(1 for patch in neighborhood if not isinstance(patch.occupant, Agent) and patch.occupant is not None)

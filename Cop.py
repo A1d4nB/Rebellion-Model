@@ -7,8 +7,9 @@ Cops module contains the attributes and functionality of a Cop from Rebellion.
 import random
 
 class Cop:
-    def __init__(self, patch):
+    def __init__(self, patch, params):
         self.patch = patch
+        self.params = params
 
     def enforce(self):
         suspects = [patch.occupant for patch in self.patch.neighborhood if isinstance(patch.occupant, Agent) and patch.occupant.is_active]
