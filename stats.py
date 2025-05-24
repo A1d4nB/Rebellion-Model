@@ -1,11 +1,10 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-from parameters import simulation_time
 
 class Stats:
-    def __init__(self):
-        self.time_track = np.arange(0, simulation_time)
+    def __init__(self, params):
+        self.time_track = np.arange(0, params.simulation_time+1)
         self.quiet_track = []
         self.active_track = []
         self.jailed_track = []

@@ -29,7 +29,7 @@ class Agent:
 
         return to_string
 
-# follow the netlogo code
+    # follow the netlogo code
     def determine_behaviour(self):
         grievance = self.calculate_grievance()
         p = self.arrest_probability(self.patch.neighborhood)
@@ -41,7 +41,8 @@ class Agent:
     def arrest_probability(self, neighborhood):
         c = sum(1 for patch in neighborhood if not isinstance(patch.occupant, Agent) and patch.occupant is not None)
         a = 1 + sum(1 for patch in neighborhood if isinstance(patch.occupant, Agent) and patch.occupant.is_active)
-        return 1 - math.exp(-k * math.floor(c / a))
+        calc = 1 - math.exp(-self.params.k * math.floor(c / a))
+        return calc
 
     def move(self):
         potential_locations = [patch for patch in self.patch.neighborhood if patch.occupant is None]
@@ -60,6 +61,3 @@ class Agent:
             self.determine_behaviour()
         else:
             self.jail_term -= 1
-
-
-

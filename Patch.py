@@ -10,6 +10,7 @@ import Cop
 
 from parameters import *
 
+
 class Patch:
     def __init__(self, x, y, params):
         self.coords = [x, y]
@@ -36,7 +37,6 @@ class Patch:
                 grid_y = (y + j) % self.params.grid_size
                 self.neighborhood.add(grid[grid_x][grid_y])
 
-
     # Could be optimised but should work for now
     def patch_distance(self, neighbor_patch):
 
@@ -49,7 +49,6 @@ class Patch:
 
         return math.sqrt((dr ** 2 + dc ** 2))
 
-
     def __repr__(self):
         to_string = ""
         if isinstance(self.occupant, Cop):
@@ -61,5 +60,4 @@ class Patch:
 
         to_string = f"patch at {self.coords} with Neighbors {len(self.neighborhood)}"
 
-
-        return  to_string
+        return to_string
