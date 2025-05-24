@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 
 
 class Stats:
@@ -47,3 +48,13 @@ class Stats:
         plt.savefig(f"{self.params.name}.jpg", dpi=300)
 
         plt.clf()
+
+    def export_to_csv(self):
+        df = pd.DataFrame(
+            {
+                "Time": self.time_track,
+                "Quiet": self.quiet_track,
+                "Active": self.active_track,
+                "Jailed": self.jailed_track
+            })
+        df.to_csv(f"{self.params.name}.csv", index=False)

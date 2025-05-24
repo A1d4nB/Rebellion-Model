@@ -83,6 +83,7 @@ def simulate(params):
         # Function for reporting
 
     stats.plotting()
+    stats.export_to_csv()
 
 
 # free_agents = len(agent_list) -
