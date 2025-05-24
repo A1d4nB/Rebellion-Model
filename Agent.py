@@ -6,15 +6,15 @@ Agent module contains the attributes and functionality of an Agent from Rebellio
 """
 import math
 import random
-from parameters import *
 
 class Agent:
     def __init__(self, patch):
         self.is_active = False
         self.jail_term = 0
+
         self.risk_aversion = random.uniform(0.0, 1.0)
         self.hardship = random.uniform(0.0, 1.0)
-        
+        self.params = params
         self.patch = patch
 
     def __repr__(self):
@@ -39,7 +39,7 @@ class Agent:
         return self.hardship * (1 - government_legitimacy)
 
     def arrest_probability(self, neighborhood):
-        c = sum(1 for patch in neighborhood if patch)
+        c = sum(1 for patch in neighborhood if not isinstance(patch.occupant, Agent) and patch.occupant is not None)
         a = 1 + sum(1 for patch in neighborhood if isinstance(patch.occupant, Agent) and patch.occupant.is_active)
         return 1 - math.exp(-k * math.floor(c / a))
 

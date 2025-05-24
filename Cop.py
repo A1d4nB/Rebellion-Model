@@ -5,8 +5,6 @@ Created on May 14 2025:
 Cops module contains the attributes and functionality of a Cop from Rebellion.
 """
 import random
-from parameters import *
-from Agent import Agent
 
 class Cop:
     def __init__(self, patch):

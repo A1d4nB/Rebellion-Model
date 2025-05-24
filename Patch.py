@@ -5,6 +5,8 @@ Created on May 14 2025:
 Patch module contains the attributes and functionality of a Patch from Rebellion.
 """
 import math
+import Agent
+import Cop
 
 from parameters import *
 
@@ -49,9 +51,9 @@ class Patch:
 
     def __repr__(self):
         to_string = ""
-        if self.cop:
+        if isinstance(self.occupant, Cop):
             to_string += "Cop "
-        elif self.agent:
+        elif isinstance(self.occupant, Agent):
             to_string += "Agent "
         else:
             to_string += "Un-Occupied "

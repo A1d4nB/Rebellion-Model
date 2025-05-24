@@ -9,6 +9,7 @@ class Stats:
         self.quiet_track = []
         self.active_track = []
         self.jailed_track = []
+        self.params = params
 
     def reporting(self, agent_list):
         quiet = 0
@@ -31,6 +32,7 @@ class Stats:
         return None
 
     def plotting(self):
+
         self.quiet_track = np.array(self.quiet_track)
         self.active_track = np.array(self.active_track)
         self.jailed_track = np.array(self.jailed_track)
@@ -39,10 +41,13 @@ class Stats:
         plt.plot(self.time_track, self.active_track, label="Active", color="red")
         plt.plot(self.time_track, self.jailed_track, label="Jailed", color="black")
 
+
+        plt.title(f"{self.params.name}")
         plt.xlabel("Time")
         plt.ylabel("Number of Agents")
+
         plt.legend()
         plt.grid(True)
-        plt.show()
+        plt.savefig(f"{self.params.name}.jpg", dpi=300)
 
-        return None
+        plt.clf()

@@ -1,12 +1,23 @@
 #constant
-grid_size = 40
-k = 2.3
-threshold = 0.1
+class Parameter:
 
-#variable
-simulation_time = 500
-cop_density = 0.40
-initial_agent_density = 0.56
-vision = 7
-government_legitimacy = 0.12
-max_jail_term = 4
+    def __init__(self, name, cop_density, initial_agent_density, vision, government_legitimacy, max_jail_term):
+        # Constant Values
+        self.grid_size = 40
+        self.k = 2.3
+        self.threshold = 0.1
+        self.simulation_time = 200
+
+        #Variable Values
+        self.name = name
+        self.vision = int(vision)
+        self.cop_density = float(cop_density)
+        self.initial_agent_density = float(initial_agent_density)
+        self.government_legitimacy = float(government_legitimacy)
+        self.max_jail_term = int(max_jail_term)
+
+
+    def __repr__(self):
+        return f"Parameter(name={self.name} cop_density={self.cop_density} initial_agent_density={self.initial_agent_density} government_legitimacy={self.government_legitimacy}"
+
+
