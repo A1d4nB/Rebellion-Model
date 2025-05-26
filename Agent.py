@@ -31,9 +31,10 @@ class Agent:
 
     # follow the netlogo code
     def determine_behaviour(self):
-        if not self.is_active and ((self.risk_aversion * self.hardship) > self.params.snitch):
-            return True
         grievance = self.calculate_grievance()
+        p = self.arrest_probability(self.patch.neighborhood)
+        if ((self.risk_aversion * self.hardship * p) > self.params.snitch):
+            return True
         p = self.arrest_probability(self.patch.neighborhood)
         self.is_active = (grievance - self.risk_aversion * p) > self.params.threshold
         return False
