@@ -10,11 +10,14 @@ class Stats:
         self.active_track = []
         self.jailed_track = []
         self.params = params
+        self.agent_track = []
+        self.cop_track = []
 
-    def reporting(self, agent_list):
+    def reporting(self, agent_list,cop_list):
         quiet = 0
         jailed = 0
         active = 0
+
         for agent in agent_list:
             if agent.jail_term >= 1:
                 jailed += 1
@@ -22,11 +25,16 @@ class Stats:
                 active += 1
             else:
                 quiet += 1
+
         print(quiet, active, jailed)
 
         self.quiet_track.append(quiet)
         self.active_track.append(active)
         self.jailed_track.append(jailed)
+
+        # Data for extension graphs
+        self.agent_track.append(len(agent_list))
+        self.cop_track.append(len(cop_list))
 
     def plotting(self):
 
@@ -46,6 +54,23 @@ class Stats:
         plt.legend()
         plt.grid(True)
         plt.savefig(f"{self.params.name}.jpg", dpi=300)
+
+        plt.clf()
+
+        # Extension Graphs
+        self.agent_track = np.array(self.agent_track)
+        self.cop_track = np.array(self.cop_track)
+
+        plt.plot(self.time_track, self.agent_track, label="Agents", color="green")
+        plt.plot(self.time_track, self.cop_track, label="Cops", color="blue")
+
+        plt.title(f"{self.params.name} v2")
+        plt.xlabel("Time")
+        plt.ylabel("Number of Turtles")
+
+        plt.legend()
+        plt.grid(True)
+        plt.savefig(f"{self.params.name}v2.jpg", dpi=300)
 
         plt.clf()
 

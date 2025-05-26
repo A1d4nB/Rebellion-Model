@@ -66,7 +66,7 @@ def simulate(params):
     stats = Stats(params)
     # Run Simulation
     time_count = params.simulation_time
-    stats.reporting(agent_list)
+    stats.reporting(agent_list,cop_list)
 
     while time_count > 0:
         try:
@@ -89,7 +89,7 @@ def simulate(params):
                     agent_list.append(new_agent)
 
             time_count -= 1
-            stats.reporting(agent_list)
+            stats.reporting(agent_list,cop_list)
         except KeyboardInterrupt:
             print("\nSimulation interrupted by user, exiting....")
             exit(1)
