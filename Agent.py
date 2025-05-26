@@ -31,9 +31,12 @@ class Agent:
 
     # follow the netlogo code
     def determine_behaviour(self):
+        if not self.is_active and ((self.risk_aversion * self.hardship) > self.params.snitch):
+            return True
         grievance = self.calculate_grievance()
         p = self.arrest_probability(self.patch.neighborhood)
         self.is_active = (grievance - self.risk_aversion * p) > self.params.threshold
+        return False
 
     def calculate_grievance(self):
         return self.hardship * (1 - self.params.government_legitimacy)
@@ -58,6 +61,11 @@ class Agent:
     def step(self):
         if self.jail_term == 0:
             self.move()
-            self.determine_behaviour()
+            if (self.determine_behaviour()):
+                return True
+
+
         else:
             self.jail_term -= 1
+
+        return False

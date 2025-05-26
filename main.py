@@ -71,9 +71,22 @@ def simulate(params):
     while time_count > 0:
         try:
             for agent in agent_list:
-                agent.step()
+                # If the agent  turns into a class traitor
+                if agent.step():
+                    new_cop = Cop(agent.patch, params)
+                    agent.patch.occupant = new_cop
+                    cop_list.append(new_cop)
+                    agent_list.remove(agent)
+
+
             for cop in cop_list:
-                cop.enforce()
+                # When cop becomes overwhelmed with active agents, they turn into an rebelling agent
+                if cop.enforce():
+                    new_agent = Agent(cop.patch, params)
+                    new_agent.is_active = True
+                    cop.patch.occupant = new_agent
+                    cop_list.remove(cop)
+                    agent_list.append(new_agent)
 
             time_count -= 1
             stats.reporting(agent_list)

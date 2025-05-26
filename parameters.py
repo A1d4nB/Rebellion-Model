@@ -1,7 +1,7 @@
 #constant
 class Parameter:
 
-    def __init__(self, name, cop_density, initial_agent_density, vision, government_legitimacy, max_jail_term):
+    def __init__(self, name, cop_density, initial_agent_density, vision, government_legitimacy, max_jail_term, snitch, cop_threshold):
         # Constant Values
         self.grid_size = 40
         self.k = 2.3
@@ -15,6 +15,8 @@ class Parameter:
         self.initial_agent_density = float(initial_agent_density)
         self.government_legitimacy = float(government_legitimacy)
         self.max_jail_term = int(max_jail_term)
+        self.snitch = float(snitch)
+        self.cop_threshold = float(cop_threshold)
 
 
     def __repr__(self):
