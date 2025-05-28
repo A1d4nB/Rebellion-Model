@@ -49,10 +49,8 @@ class Agent:
 
         if potential_locations:
             new_patch = random.choice(potential_locations)
-            self.patch.agent = False
             self.patch.occupant = None
             self.patch = new_patch
-            new_patch.agent = True
             new_patch.occupant = self
 
     def step(self):

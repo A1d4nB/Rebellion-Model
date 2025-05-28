@@ -75,7 +75,7 @@ def simulate(params):
             for agent in agent_list:
                 agent.step()
             for cop in cop_list:
-                cop.enforce()
+                cop.step()
 
             time_count -= 1
             stats.reporting(agent_list)
