@@ -10,7 +10,6 @@ class Stats:
         self.active_track = []
         self.jailed_track = []
         self.params = params
-
     def reporting(self, agent_list):
         quiet = 0
         jailed = 0
@@ -22,7 +21,7 @@ class Stats:
                 active += 1
             else:
                 quiet += 1
-        print(quiet, active, jailed)
+        #print(quiet, active, jailed)
 
         self.quiet_track.append(quiet)
         self.active_track.append(active)
@@ -49,12 +48,13 @@ class Stats:
 
         plt.clf()
 
-    def export_to_csv(self):
+    def export_df(self):
         df = pd.DataFrame(
             {
-                "Time": self.time_track,
-                "Quiet": self.quiet_track,
-                "Active": self.active_track,
-                "Jailed": self.jailed_track
+                f"Quiet": self.quiet_track,
+                f"Active": self.active_track,
+                f"Jailed": self.jailed_track
             })
-        df.to_csv(f"{self.params.name}.csv", index=False)
+        return df
+
+

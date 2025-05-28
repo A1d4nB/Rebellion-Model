@@ -4,6 +4,8 @@ Created on May 14 2025:
 
 This will be the main file to run the simulation. This should include the setup and the go functionality.
 """
+import pandas as pd
+
 from parameters import Parameter
 from Agent import Agent
 from Cop import Cop
@@ -83,7 +85,7 @@ def simulate(params):
         # Function for reporting
 
     stats.plotting()
-    stats.export_to_csv()
+    return stats.export_df()
 
 
 # free_agents = len(agent_list) -
@@ -93,10 +95,21 @@ if __name__ == "__main__":
     with open('Parameters.csv') as csv_file:
         reader = csv.DictReader(csv_file)
 
+
         for row in reader:
             params = Parameter(row["name"], row['cop_density'], row["initial_agent_density"], row["vision"],
                                row["government_legitimacy"], row["max_jail_term"])
-            simulate(params)
+            five_runs = pd.DataFrame()
+            for run in range(0,1):
+                df = simulate(params)
+                five_runs[f"quiet_{str(run)}"] = df['Quiet']
+                five_runs[f"active_{str(run)}"] = df['Active']
+                five_runs[f"jailed_{str(run)}"] = df['Jailed']
+
+
+
+            five_runs.to_csv('output.csv', index=False)
+
 
 
 
