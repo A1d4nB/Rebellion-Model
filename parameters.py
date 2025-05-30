@@ -1,4 +1,10 @@
-#constant
+"""
+Created on May 14 2025:
+@author: Aidan Butler, Adam Helal, Mithun Rithvik Ayyasamy Sivakumar
+
+Parameters module contains the fixed and variables params used for a simulation
+"""
+
 class Parameter:
 
     def __init__(self, name, cop_density, initial_agent_density, vision, government_legitimacy, max_jail_term):
@@ -16,7 +22,7 @@ class Parameter:
         self.government_legitimacy = float(government_legitimacy)
         self.max_jail_term = int(max_jail_term)
 
-
+    #printable format for the parameters
     def __repr__(self):
         return f"Parameter(name={self.name} cop_density={self.cop_density} initial_agent_density={self.initial_agent_density} government_legitimacy={self.government_legitimacy}"
 
