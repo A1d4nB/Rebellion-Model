@@ -6,7 +6,7 @@ class Parameter:
         self.grid_size = 40
         self.k = 2.3
         self.threshold = 0.1
-        self.simulation_time = 200
+        self.simulation_time = 250
 
         #Variable Values
         self.name = name

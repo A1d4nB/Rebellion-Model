@@ -4,6 +4,8 @@ Created on May 14 2025:
 
 This will be the main file to run the simulation. This should include the setup and the go functionality.
 """
+from itertools import zip_longest
+
 from parameters import Parameter
 from Agent import Agent
 from Cop import Cop
@@ -21,8 +23,8 @@ def simulate(params):
     # All variables in parameters file
 
     # Checking if the values match
-    print(params.cop_density)
-    print(params.initial_agent_density)
+    #print(params.cop_density)
+    #print(params.initial_agent_density)
     if (params.cop_density + params.initial_agent_density) > 0.99:
         raise ValueError("The sum of INITIAL-COP-DENSITY and INITIAL-AGENT-DENSITY should not be greater than 100")
 
@@ -96,20 +98,40 @@ def simulate(params):
         # Function for reporting
 
     stats.plotting()
-    stats.export_to_csv()
+    #stats.export_to_csv()
+
+    return stats.data_dict
 
 
-# free_agents = len(agent_list) -
-
-if __name__ == "__main__":
-
-    with open('Parameters_new.csv') as csv_file:
+def run_experiment():
+    with open('Parameters_Extended.csv') as csv_file:
         reader = csv.DictReader(csv_file)
+        dict_runs = {}
+
 
         for row in reader:
             params = Parameter(row["name"], row['cop_density'], row["initial_agent_density"], row["vision"],
                                row["government_legitimacy"], row["max_jail_term"], row["snitch"], row["cop_threshold"])
-            simulate(params)
+
+            for run in range(0, 5):
+                dictionary = simulate(params)
+                new_dict = {f'{key}_{run}': value for key, value in dictionary.items() if key != "time"}
+                dict_runs = dict_runs | new_dict
+
+            headers = list(dict_runs.keys())
+            columns = list(dict_runs[i] for i in headers)
+            rows = list(zip_longest(*columns, fillvalue=''))
+
+            with open(f'{row["name"]}.csv',"w", newline='') as csv_write_file:
+                writer = csv.writer(csv_write_file)
+                writer.writerow(headers)
+                writer.writerows(rows)
+
+
+if __name__ == "__main__":
+
+    run_experiment()
+
 
 
 

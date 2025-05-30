@@ -5,13 +5,18 @@ import pandas as pd
 
 class Stats:
     def __init__(self, params):
-        self.time_track = np.arange(0, params.simulation_time+1)
-        self.quiet_track = []
-        self.active_track = []
-        self.jailed_track = []
         self.params = params
-        self.agent_track = []
-        self.cop_track = []
+
+        self.time = 0
+        self.data_dict = {
+                          "time": [],
+
+                          "quiet_track": [],
+                          "active_track": [],
+                          "jailed_track": [],
+
+                          "cop_track": [],
+                          "agent_track": []}
 
     def reporting(self, agent_list,cop_list):
         quiet = 0
@@ -26,25 +31,29 @@ class Stats:
             else:
                 quiet += 1
 
-        print(quiet, active, jailed)
 
-        self.quiet_track.append(quiet)
-        self.active_track.append(active)
-        self.jailed_track.append(jailed)
+        #
+        self.data_dict["quiet_track"].append(quiet)
+        self.data_dict["active_track"].append(active)
+        self.data_dict["jailed_track"].append(jailed)
+        self.data_dict["time"].append(self.time)
+        self.time += 1
 
         # Data for extension graphs
-        self.agent_track.append(len(agent_list))
-        self.cop_track.append(len(cop_list))
+        self.data_dict["cop_track"].append(len(cop_list))
+        self.data_dict["agent_track"].append(len(agent_list))
+
 
     def plotting(self):
 
-        self.quiet_track = np.array(self.quiet_track)
-        self.active_track = np.array(self.active_track)
-        self.jailed_track = np.array(self.jailed_track)
+        quiet_track = np.array(self.data_dict["quiet_track"])
+        active_track = np.array(self.data_dict["active_track"])
+        jailed_track = np.array(self.data_dict["jailed_track"])
+        time_track = np.array(self.data_dict["time"])
 
-        plt.plot(self.time_track, self.quiet_track, label="Quiet", color="green")
-        plt.plot(self.time_track, self.active_track, label="Active", color="red")
-        plt.plot(self.time_track, self.jailed_track, label="Jailed", color="black")
+        plt.plot(time_track, quiet_track, label="Quiet", color="green")
+        plt.plot(time_track, active_track, label="Active", color="red")
+        plt.plot(time_track, jailed_track, label="Jailed", color="black")
 
 
         plt.title(f"{self.params.name}")
@@ -58,11 +67,11 @@ class Stats:
         plt.clf()
 
         # Extension Graphs
-        self.agent_track = np.array(self.agent_track)
-        self.cop_track = np.array(self.cop_track)
+        agent_track = np.array(self.data_dict["agent_track"])
+        cop_track = np.array(self.data_dict["cop_track"])
 
-        plt.plot(self.time_track, self.agent_track, label="Agents", color="green")
-        plt.plot(self.time_track, self.cop_track, label="Cops", color="blue")
+        plt.plot(time_track, agent_track, label="Agents", color="green")
+        plt.plot(time_track, cop_track, label="Cops", color="blue")
 
         plt.title(f"{self.params.name} v2")
         plt.xlabel("Time")
@@ -73,13 +82,3 @@ class Stats:
         plt.savefig(f"{self.params.name}v2.jpg", dpi=300)
 
         plt.clf()
-
-    def export_to_csv(self):
-        df = pd.DataFrame(
-            {
-                "Time": self.time_track,
-                "Quiet": self.quiet_track,
-                "Active": self.active_track,
-                "Jailed": self.jailed_track
-            })
-        df.to_csv(f"{self.params.name}.csv", index=False)
