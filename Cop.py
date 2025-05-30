@@ -31,10 +31,8 @@ class Cop:
         potential_locations = [patch for patch in self.patch.neighborhood if patch.occupant is None]
 
         new_patch = random.choice(potential_locations)
-        self.patch.cop = False
         self.patch.occupant = None
         self.patch = new_patch
-        new_patch.cop = True
         new_patch.occupant = self
 
     def step(self):
