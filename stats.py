@@ -1,9 +1,19 @@
+"""
+Created on May 14 2025:
+@author: Aidan Butler, Adam Helal, Mithun Rithvik Ayyasamy Sivakumar
+
+Stats module contains functionality to track and plot the passed stats
+"""
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
 
 class Stats:
+
+    #track items such as time
+    # and variety of agents (quiet,active,jailed) 
+    # + extension ones # of cops and # of agents
     def __init__(self, params):
         self.params = params
 
@@ -17,7 +27,8 @@ class Stats:
 
                           "cop_track": [],
                           "agent_track": []}
-
+        
+    #count agents and classify them
     def reporting(self, agent_list,cop_list):
         quiet = 0
         jailed = 0
@@ -32,7 +43,6 @@ class Stats:
                 quiet += 1
 
 
-        #
         self.data_dict["quiet_track"].append(quiet)
         self.data_dict["active_track"].append(active)
         self.data_dict["jailed_track"].append(jailed)
@@ -43,7 +53,7 @@ class Stats:
         self.data_dict["cop_track"].append(len(cop_list))
         self.data_dict["agent_track"].append(len(agent_list))
 
-
+    #count agents and classify them
     def plotting(self):
 
         quiet_track = np.array(self.data_dict["quiet_track"])
