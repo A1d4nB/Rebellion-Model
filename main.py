@@ -35,7 +35,7 @@ def simulate(params):
         for patch in row:
             patch.populate_neighbours_v2(grid)
 
-    # Spawn Agents based on the chosen density
+    # Spawn Agents based on the chosen available coords and density
     agent_coords = random.sample(coords, math.ceil(params.initial_agent_density * len(coords)))
     agent_list = []
 
@@ -45,13 +45,13 @@ def simulate(params):
         agent_list.append(agent)
         grid[i][j].occupant = agent
 
-    # Spawn Agents based on the chosen density
+    # Spawn Cops based on the chosen available coords and density
     un_occupied_coords = [[i, j] for i in range(params.grid_size) for j in range(params.grid_size)
                           if (grid[i][j].occupant is None)]
 
     cop_coords = random.sample(un_occupied_coords, math.ceil(params.cop_density * len(coords)))
 
-    # Assign agent to each corresponding chosen patch based on the density
+    # Assign cops to each corresponding chosen patch based on the density
     cop_list = []
     for i, j in cop_coords:
         cop = Cop(grid[i][j], params)
