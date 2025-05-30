@@ -70,6 +70,8 @@ def simulate(params):
     time_count = params.simulation_time
     stats.reporting(agent_list)
 
+    #turtles = random.shuffle(agent_list+cop_list)
+
     while time_count > 0:
         try:
             for agent in agent_list:
@@ -100,7 +102,7 @@ if __name__ == "__main__":
             params = Parameter(row["name"], row['cop_density'], row["initial_agent_density"], row["vision"],
                                row["government_legitimacy"], row["max_jail_term"])
             five_runs = pd.DataFrame()
-            for run in range(0,1):
+            for run in range(0,5):
                 df = simulate(params)
                 five_runs[f"quiet_{str(run)}"] = df['Quiet']
                 five_runs[f"active_{str(run)}"] = df['Active']

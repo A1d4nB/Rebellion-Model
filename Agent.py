@@ -39,7 +39,7 @@ class Agent:
         return self.hardship * (1 - self.params.government_legitimacy)
 
     def arrest_probability(self, neighborhood):
-        c = sum(1 for patch in neighborhood if not isinstance(patch.occupant, Agent) and patch.occupant is not None)
+        c = sum(1 for patch in neighborhood if patch.occupant is not None and not isinstance(patch.occupant, Agent))
         a = 1 + sum(1 for patch in neighborhood if isinstance(patch.occupant, Agent) and patch.occupant.is_active)
         calc = 1 - math.exp(-self.params.k * math.floor(c / a))
         return calc

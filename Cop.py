@@ -26,10 +26,11 @@ class Cop:
     def move(self):
         potential_locations = [patch for patch in self.patch.neighborhood if patch.occupant is None]
 
-        new_patch = random.choice(potential_locations)
-        self.patch.occupant = None
-        self.patch = new_patch
-        new_patch.occupant = self
+        if potential_locations:
+            new_patch = random.choice(potential_locations)
+            self.patch.occupant = None
+            self.patch = new_patch
+            new_patch.occupant = self
 
     def step(self):
         # agent.run
