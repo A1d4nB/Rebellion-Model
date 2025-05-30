@@ -4,23 +4,22 @@ Created on May 14 2025:
 
 This will be the main file to run the simulation. This should include the setup and the go functionality.
 """
-# import pandas as pd
 
-from parameters import Parameter
+
 from Agent import Agent
 from Cop import Cop
 from Patch import Patch
+from parameters import Parameter
 from stats import Stats
 import random
 import math
 import csv
+from itertools import zip_longest
 
-
+"Runs a simulation for the given parameter, returns a dictionary file with all the results."
 def simulate(params):
 
-
-    print(params.cop_density)
-    print(params.initial_agent_density)
+    print("Simulating...")
 
     #check for illegal combination of densities
     if (params.cop_density + params.initial_agent_density) > 0.99:
@@ -58,18 +57,14 @@ def simulate(params):
         cop_list.append(cop)
         grid[i][j].occupant = cop
 
-    print("Agent - " + str(len(agent_list)))
-    print("Cop - " + str(len(cop_list)))
 
-    simulation_track = [i for i in range(0, params.simulation_time)]
-
-    stats = Stats(params) ## init stats module
+    stats = Stats(params) # init stats module
 
     # Run Simulation
     time_count = params.simulation_time
     stats.reporting(agent_list) #take count of current agent list and their statuses
 
-    #turtles = random.shuffle(agent_list+cop_list)
+
 
     #iteration to let model run within x ticks (simulation_time param)
     while time_count > 0:
@@ -84,44 +79,39 @@ def simulate(params):
         except KeyboardInterrupt:
             print("\nSimulation interrupted by user, exiting....")
             exit(1)
-        
-    stats.plotting()
-    return stats.export_df()
 
 
+    return stats.data_dict
 
-if __name__ == "__main__":
 
-    #main execution involved processing csvs of a parameters
-    #doing 5 runs for each set of a parameters and averaging those to returrn
-    #output is a csv file with the counts of each type of agents
+"""Main function to run experiments involved processing csvs of a parameters
+doing 5 runs for each set of a parameters and averaging those to returrn
+output is a csv file with the counts of each type of agents"""
+def run_experiment():
     with open('Parameters.csv') as csv_file:
         reader = csv.DictReader(csv_file)
+        dict_runs = {} # Dictionary to include all the values from each run
 
 
         for row in reader:
             params = Parameter(row["name"], row['cop_density'], row["initial_agent_density"], row["vision"],
                                row["government_legitimacy"], row["max_jail_term"])
-            five_runs = pd.DataFrame()
-            for run in range(0,5):
-                df = simulate(params)
-                five_runs[f"quiet_{str(run)}"] = df['Quiet']
-                five_runs[f"active_{str(run)}"] = df['Active']
-                five_runs[f"jailed_{str(run)}"] = df['Jailed']
+            # Running 5 Times
+            for run in range(0, 5):
+                dictionary = simulate(params)
+                new_dict = {f'{key}_{run}': value for key, value in dictionary.items() if key != "time"}
+                dict_runs = dict_runs | new_dict
+
+            headers = list(dict_runs.keys())
+            columns = list(dict_runs[i] for i in headers)
+            rows = list(zip_longest(*columns, fillvalue=''))
+
+            # Write to new csv file
+            with open(f'{params.name}.csv',"w", newline='') as csv_write_file:
+                writer = csv.writer(csv_write_file)
+                writer.writerow(headers)
+                writer.writerows(rows)
 
 
-
-            five_runs.to_csv('output.csv', index=False)
-
-
-
-
-
-
-# variable
-# simulation_time = 500
-# cop_density = 0.40
-# initial_agent_density = 0.56
-# vision = 7
-# government_legitimacy = 0.12
-# max_jail_term = 4
+if __name__ == "__main__":
+    run_experiment()
