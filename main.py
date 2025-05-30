@@ -81,7 +81,7 @@ def simulate(params):
 
             for cop in cop_list:
                 # When cop becomes overwhelmed with active agents, they turn into an rebelling agent
-                if cop.enforce():
+                if cop.step():
                     new_agent = Agent(cop.patch, params)
                     new_agent.is_active = True
                     cop.patch.occupant = new_agent
