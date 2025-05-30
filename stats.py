@@ -4,16 +4,12 @@ Created on May 14 2025:
 
 Stats module contains functionality to track and plot the passed stats
 """
-import matplotlib.pyplot as plt
-import numpy as np
-import pandas as pd
-
 
 class Stats:
 
-    #track items such as time
-    # and variety of agents (quiet,active,jailed) 
-    # + extension ones # of cops and # of agents
+    """track items such as time
+     and variety of agents (quiet,active,jailed)
+     + extension ones  of cops and of agents"""
     def __init__(self, params):
         self.params = params
 
@@ -28,7 +24,7 @@ class Stats:
                           "cop_track": [],
                           "agent_track": []}
         
-    #count agents and classify them
+    "count agents and classify them"
     def reporting(self, agent_list,cop_list):
         quiet = 0
         jailed = 0
@@ -52,43 +48,3 @@ class Stats:
         # Data for extension graphs
         self.data_dict["cop_track"].append(len(cop_list))
         self.data_dict["agent_track"].append(len(agent_list))
-
-    #count agents and classify them
-    def plotting(self):
-
-        quiet_track = np.array(self.data_dict["quiet_track"])
-        active_track = np.array(self.data_dict["active_track"])
-        jailed_track = np.array(self.data_dict["jailed_track"])
-        time_track = np.array(self.data_dict["time"])
-
-        plt.plot(time_track, quiet_track, label="Quiet", color="green")
-        plt.plot(time_track, active_track, label="Active", color="red")
-        plt.plot(time_track, jailed_track, label="Jailed", color="black")
-
-
-        plt.title(f"{self.params.name}")
-        plt.xlabel("Time")
-        plt.ylabel("Number of Agents")
-
-        plt.legend()
-        plt.grid(True)
-        plt.savefig(f"{self.params.name}.jpg", dpi=300)
-
-        plt.clf()
-
-        # Extension Graphs
-        agent_track = np.array(self.data_dict["agent_track"])
-        cop_track = np.array(self.data_dict["cop_track"])
-
-        plt.plot(time_track, agent_track, label="Agents", color="green")
-        plt.plot(time_track, cop_track, label="Cops", color="blue")
-
-        plt.title(f"{self.params.name} v2")
-        plt.xlabel("Time")
-        plt.ylabel("Number of Turtles")
-
-        plt.legend()
-        plt.grid(True)
-        plt.savefig(f"{self.params.name}v2.jpg", dpi=300)
-
-        plt.clf()

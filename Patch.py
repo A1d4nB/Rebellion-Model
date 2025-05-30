@@ -8,9 +8,6 @@ import math
 import Agent
 import Cop
 
-from parameters import *
-
-
 class Patch:
     def __init__(self, x, y, params):
         self.coords = [x, y]

@@ -5,7 +5,6 @@ Created on May 14 2025:
 This will be the main file to run the simulation. This should include the setup and the go functionality.
 """
 
-from itertools import zip_longest
 
 from parameters import Parameter
 from Agent import Agent
@@ -15,11 +14,11 @@ from stats import Stats
 import random
 import math
 import csv
+from itertools import zip_longest
 
-
-# Setup
+"Runs a simulation for the given parameter, returns a dictionary file with all the results."
 def simulate(params):
-   
+    print("Simulating Extension...")
     #check for illegal combination of densities
     if (params.cop_density + params.initial_agent_density) > 0.99:
         raise ValueError("The sum of INITIAL-COP-DENSITY and INITIAL-AGENT-DENSITY should not be greater than 100")
@@ -55,12 +54,9 @@ def simulate(params):
         cop_list.append(cop)
         grid[i][j].occupant = cop
 
-    print("Agent - " + str(len(agent_list)))
-    print("Cop - " + str(len(cop_list)))
-
-    simulation_track = [i for i in range(0, params.simulation_time)]
 
     stats = Stats(params) ## init stats module
+
     # Run Simulation
     time_count = params.simulation_time
     stats.reporting(agent_list,cop_list) #take count of current agent list and their statuses
@@ -92,16 +88,13 @@ def simulate(params):
             print("\nSimulation interrupted by user, exiting....")
             exit(1)
 
-    #function to draw graphs
-    stats.plotting()
-    #stats.export_to_csv()
 
     return stats.data_dict
 
 
-#main function to run experiments involved processing csvs of a parameters
-#doing 5 runs for each set of a parameters and averaging those to returrn
-#output is a csv file with the counts of each type of agents
+"""Main function to run experiments involved processing csvs of a parameters
+doing 5 runs for each set of a parameters and averaging those to returrn
+output is a csv file with the counts of each type of agents"""
 def run_experiment():
     with open('Parameters_Extended.csv') as csv_file:
         reader = csv.DictReader(csv_file)
@@ -121,7 +114,7 @@ def run_experiment():
             columns = list(dict_runs[i] for i in headers)
             rows = list(zip_longest(*columns, fillvalue=''))
 
-            with open(f'{row["name"]}.csv',"w", newline='') as csv_write_file:
+            with open(f'{params.name}.csv',"w", newline='') as csv_write_file:
                 writer = csv.writer(csv_write_file)
                 writer.writerow(headers)
                 writer.writerows(rows)
